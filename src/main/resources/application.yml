@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins:
+                  - "http://localhost:3000"
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowed-headers:
+                  - "*"
+                allow-credentials: true
+          routes:
+            - id: auth-server-api
+              uri: lb://AUTH-SERVER
+              predicates:
+                - Path=/api/auth/**
+
+            - id: auth-server-oauth2
+              uri: lb://AUTH-SERVER
+              predicates:
+                - Path=/oauth2/**
+
+            - id: epicas-service
+              uri: lb://EPICAS-SERVICE
+              predicates:
+                - Path=/api/epicas/**
+
+            - id: issues-service
+              uri: lb://ISSUES-SERVICE
+              predicates:
+                - Path=/api/issues/**
+
+            - id: ms-usuario
+              uri: lb://MS-USUARIO
+              predicates:
+                - Path=/api/usuario/**
+
+            - id: proyecto-service
+              uri: lb://PROYECTO-SERVICE
+              predicates:
+                - Path=/api/proyectos/**
+server:
+  port: 8080
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  service-url:
+    defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
