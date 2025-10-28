@@ -45,10 +45,16 @@ spring:
               predicates:
                 - Path=/api/usuario/**
 
+            - id: estadisticas-service
+              uri: lb://ESTADISTICAS-SERVICE
+              predicates:
+                - Path=/api/estadisticas/**
+
             - id: proyecto-service
               uri: lb://PROYECTO-SERVICE
               predicates:
                 - Path=/api/proyectos/**
+
 server:
   port: 8080
 
